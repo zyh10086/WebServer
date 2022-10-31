@@ -1,4 +1,3 @@
-//code by zyh
 #include "http_conn.h"
 //git test
 // 定义HTTP响应的一些状态信息
