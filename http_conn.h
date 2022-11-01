@@ -1,4 +1,3 @@
-//code by zyh
 #ifndef HTTPCONNECTION_H
 #define HTTPCONNECTION_H
 

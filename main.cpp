@@ -95,6 +95,7 @@ int main(int argc,char* argv[]){
             int sockfd = events[i].data.fd;//data类型为一个union
             if(sockfd == listenfd){
                 //有客户端连接进来
+                printf("有客户端连接进来\n");
                 struct sockaddr_in client_address;
                 socklen_t client_addrlen = sizeof(client_address);
                 int connfd = accept(listenfd,(struct sockaddr*)&client_address,&client_addrlen);
@@ -109,9 +110,11 @@ int main(int argc,char* argv[]){
                 users[connfd].init(connfd,client_address);
             }else if(events[i].events & (EPOLLRDHUP|EPOLLHUP|EPOLLERR)){
                 //对方异常断开，关闭链接
+                printf("对方异常断开，关闭链接\n");
                 users[sockfd].close_conn();
             }else if(events[i].events & EPOLLIN){
                 //有读事件发生
+                printf("有读事件发生\n");
                 if(users[sockfd].read()){
                     //一次性把数据全部读完
                     pool->append(users+sockfd);
@@ -120,6 +123,7 @@ int main(int argc,char* argv[]){
                     users[sockfd].close_conn();
                 }
             }else if(events[i].events & EPOLLOUT){
+                printf("有写事件发生\n");
                 //有写事件发生
                 if(!users[sockfd].write()){
                     //写失败了
