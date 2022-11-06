@@ -25,8 +25,8 @@ public:
     static int m_epollfd; //所有的socket上的事件都被注册到同一个epoll对象上.
     static int m_user_count; //统计用户的数量
 
-    static const int READ_BUFFER_SIZE = 4048;
-    static const int WRITE_BUFFER_SIZE = 4048;
+    static const int READ_BUFFER_SIZE = 2048;
+    static const int WRITE_BUFFER_SIZE = 4096;
     static const int FILENAME_LEN = 200;
 
     //HTTP请求方法，但我们只支持GET

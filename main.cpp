@@ -61,8 +61,11 @@ int main(int argc,char* argv[]){
     int listenfd = socket(PF_INET,SOCK_STREAM,0);
 
     //设置端口复用,绑定之前设置
-    int reuse = 1;
-    setsockopt(listenfd,SOL_SOCKET,SO_REUSEADDR,&reuse,sizeof(reuse));
+    //int reuse = 1;
+    //setsockopt(listenfd,SOL_SOCKET,SO_REUSEADDR,&reuse,sizeof(reuse));
+    int NetTimeout=1000;
+    setsockopt(listenfd,SOL_SOCKET,SO_SNDTIMEO,(char*)&NetTimeout,sizeof(int));
+    setsockopt(listenfd,SOL_SOCKET,SO_RCVTIMEO,(char*)&NetTimeout,sizeof(int));
 
     //绑定
     struct sockaddr_in address;
@@ -82,6 +85,7 @@ int main(int argc,char* argv[]){
     addfd(epollfd,listenfd,false);
     http_conn::m_epollfd = epollfd;
 
+
     while(true){
         //如果成功，返回请求的I/O准备就绪的文件描述符的数目
         int num = epoll_wait(epollfd,events,MAX_EVENT_NUMBER,-1);
@@ -99,7 +103,7 @@ int main(int argc,char* argv[]){
                 struct sockaddr_in client_address;
                 socklen_t client_addrlen = sizeof(client_address);
                 int connfd = accept(listenfd,(struct sockaddr*)&client_address,&client_addrlen);
-            
+                
                 if(http_conn::m_user_count>=MAX_FD){
                     //目前的n接数满了
                     //这里可以告诉客户端服务器内部正忙
