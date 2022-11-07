@@ -441,6 +441,9 @@ bool http_conn::add_content_length(int content_length) {
     return add_response("Content-Length: %d\r\n",content_length);
 }
 bool http_conn::add_content_type() {
+    if(!m_real_file){
+        return add_response("Content-Type:%s\r\n","text/html");
+    }
     char* temp=strchr(m_real_file,'.');
     printf("%s\n",temp);
     if(strcmp(temp,".css")==0){

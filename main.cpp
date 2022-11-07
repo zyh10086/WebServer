@@ -61,8 +61,8 @@ int main(int argc,char* argv[]){
     int listenfd = socket(PF_INET,SOCK_STREAM,0);
 
     //设置端口复用,绑定之前设置
-    //int reuse = 1;
-    //setsockopt(listenfd,SOL_SOCKET,SO_REUSEADDR,&reuse,sizeof(reuse));
+    int reuse = 1;
+    setsockopt(listenfd,SOL_SOCKET,SO_REUSEADDR,&reuse,sizeof(reuse));
     int NetTimeout=1000;
     setsockopt(listenfd,SOL_SOCKET,SO_SNDTIMEO,(char*)&NetTimeout,sizeof(int));
     setsockopt(listenfd,SOL_SOCKET,SO_RCVTIMEO,(char*)&NetTimeout,sizeof(int));
