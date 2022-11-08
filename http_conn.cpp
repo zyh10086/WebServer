@@ -441,7 +441,7 @@ bool http_conn::add_content_length(int content_length) {
     return add_response("Content-Length: %d\r\n",content_length);
 }
 bool http_conn::add_content_type() {
-    if(!m_real_file){
+    if(S_ISDIR( m_file_stat.st_mode )){
         return add_response("Content-Type:%s\r\n","text/html");
     }
     char* temp=strchr(m_real_file,'.');
@@ -478,24 +478,28 @@ bool http_conn::process_write(HTTP_CODE ret) {
             if(!add_content(error_500_form)){
                 return false;
             }
+            break;
         case BAD_REQUEST:
             add_status_line(400,error_400_title);
             add_headers(strlen(error_400_form));
             if(!add_content(error_400_form)){
                 return false;
             }
+            break;
         case NO_REQUEST:
             add_status_line(404,error_404_title);
             add_headers(strlen(error_404_form));
             if(!add_content(error_404_form)){
                 return false;
             }
+            break;
         case FORBIDDEN_REQUEST:
             add_status_line(403,error_403_title);
             add_headers(strlen(error_403_form));
             if(!add_content(error_403_form)){
                 return false;
             }
+            break;
         case FILE_REQUEST:
             add_status_line(200,ok_200_title);
             add_headers(m_file_stat.st_size);
