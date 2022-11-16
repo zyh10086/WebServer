@@ -414,7 +414,9 @@ bool http_conn::add_response(const char* format,...){
     //printf("1\n");
     va_list arg_list;
     va_start(arg_list,format);
+    printf("start\n");
     int len = vsnprintf(m_write_buf + m_write_idx,WRITE_BUFFER_SIZE-1-m_write_idx,format,arg_list);
+    printf("end\n");
     if(len >= (WRITE_BUFFER_SIZE-1-m_write_idx)){
         return false;
     }
@@ -432,8 +434,11 @@ bool http_conn::add_status_line(int status, const char *titile) {
 bool http_conn::add_headers(int content_length) {
     printf("content_length:%d\n",content_length);
     add_content_length(content_length);
+    printf("1\n");
     add_content_type();
+    printf("1\n");
     add_linger();
+    printf("1\n");
     add_blank_line();
 }
 
@@ -444,7 +449,13 @@ bool http_conn::add_content_type() {
     if(S_ISDIR( m_file_stat.st_mode )){
         return add_response("Content-Type:%s\r\n","text/html");
     }
+    if(m_real_file==nullptr){
+        return add_response("Content-Type:%s\r\n","text/html");
+    }
     char* temp=strchr(m_real_file,'.');
+    if(temp==nullptr){
+        return add_response("Content-Type:%s\r\n","text/html");
+    }
     printf("%s\n",temp);
     if(strcmp(temp,".css")==0){
         return add_response("Content-Type:%s\r\n","text/css");
