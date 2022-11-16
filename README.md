@@ -1,7 +1,7 @@
 
 22/11/16 update
 解决了个奇怪的错误  
-！[Image discription](/pic/error1.jpg)
+![Image discription](/pic/error1.jpg)
 
 22/11/7 update
 解决了get请求文件夹时发生的段错误。
@@ -11,7 +11,7 @@
 
 
 
-#C++-牛客-Linux高并发服务器开发项目  
+# C++-牛客-Linux高并发服务器开发项目  
 locker.h主要对互斥锁、条件变量和信号量进行了封装。
 threadpool.h实现了一个半同步/半反应线程池，由locker类互斥锁保证每个请求独占式的访问，sem类信号量实现多线程的同步。
 http_conn.h、http_conn.cpp中实现了对http报文的读、写、解析。
